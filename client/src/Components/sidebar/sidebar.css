@@ -1,0 +1,41 @@
+
+#toggle {
+  cursor: pointer;
+  color: #fff;
+  font-size: 40px;
+  background: transparent;
+  border: none;
+  overflow: hidden;
+}
+
+.sidebar {
+  height: 100vh;
+  padding-left: 20px;
+  background-color: navy;
+  opacity: 0.8;
+  color: white;
+  width: 200px;
+  z-index: 200;
+  position: fixed;
+  left: -100%;
+  animation: slide-open 0.8s forwards;
+}
+.sidebar.close {
+  left: 0%;
+  animation: slide-close 2s forwards;
+}
+@keyframes slide-close {
+  100% {
+    left: -100%;
+  }
+}
+@keyframes slide-open {
+  100% {
+    left: 0;
+  }
+}
+#dropdown-button-drop-end {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+}
