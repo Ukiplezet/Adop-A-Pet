@@ -10,6 +10,9 @@ async function loginUser(email, password) {
     }
 
     const dbUser = await UserModel.findOne({ email });
+    if (!dbUser) {
+      return "noUser";
+    }
     if (dbUser && (await bcrypt.compare(password, dbUser.password))) {
       const token = jwt.sign({ user_id: dbUser._id }, process.env.TOKEN_KEY, {
         expiresIn: "2h",
@@ -101,7 +104,7 @@ async function updateUserDetails(userId, userData) {
 async function getUserFromDBById(userId) {
   try {
     const userFromDB = await UserModel.findOne({ _id: userId });
-    if (!userFromDB) return "No user is found";
+    if (!userFromDB) return "No user is found!";
     return userFromDB;
   } catch (err) {
     return err;

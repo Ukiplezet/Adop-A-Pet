@@ -174,18 +174,30 @@ export default {
   },
 
   loginUser: async ({ email, password }) => {
-    const response = await axios.post(`${BASE_URL}/login`, { email, password });
-    return response.data;
+    try {
+      const response = await axios.post(`${BASE_URL}/login`, {
+        email,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      return alert(error.response.data);
+    }
   },
 
   signUpUser: async ({ firstName, lastName, email, password, phoneNumber }) => {
-    const response = await axios.post(`${BASE_URL}/signup`, {
-      firstName,
-      lastName,
-      email,
-      password,
-      phoneNumber,
-    });
-    return response.data;
+    try {
+      const response = await axios.post(`${BASE_URL}/signup`, {
+        firstName,
+        lastName,
+        email,
+        password,
+        phoneNumber,
+      });
+
+      return response.data;
+    } catch (error) {
+      return alert(error.response.data);
+    }
   },
 };

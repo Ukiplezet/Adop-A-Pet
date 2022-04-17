@@ -11,7 +11,12 @@ async function loginController(req, res) {
   try {
     const { email, password } = req.body;
     const response = await loginUser(email, password);
-    res.status(200).send(response);
+
+    if (response === "noUser") {
+      return res.status(500).send("User Not Found. Please Register");
+    }
+
+    return res.status(200).send(response);
   } catch (e) {
     res.send(e);
   }
@@ -23,7 +28,7 @@ async function signupController(req, res) {
     if (
       !(email && password && firstName && lastName && password && phoneNumber)
     ) {
-      res.status(400).send("All input is required");
+      res.status(400).send("All input is required!");
     }
 
     const response = await addNewUser(
@@ -35,12 +40,12 @@ async function signupController(req, res) {
     );
 
     if (response === "oldUser") {
-      return res.status(409).send("User already exists. Please Login ");
+      return res.status(409).send("User already exists. Please Login!");
     }
 
     res.status(201).json(response);
   } catch (err) {
-    return err.message;
+    return err;
   }
 }
 async function updateUserController(req, res) {

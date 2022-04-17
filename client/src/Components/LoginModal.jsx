@@ -77,7 +77,7 @@ const LoginModal = (props) => {
         history.push(`/${loggedId}`);
       }
     } catch (err) {
-      alert(err.message);
+      return err;
     }
     setLocalStorage();
   };

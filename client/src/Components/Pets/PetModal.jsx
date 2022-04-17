@@ -45,9 +45,8 @@ export default function PetModal({ setPetsArray, openModalHandler, pet }) {
   };
 
   const getAllPets = async () => {
-    const response = await axios
-      .get("http://localhost:5500/pet")
-        setPetsArray(response.data);
+    const response = await axios.get("http://localhost:5500/pet");
+    setPetsArray(response.data);
   };
 
   return (
@@ -147,7 +146,7 @@ export default function PetModal({ setPetsArray, openModalHandler, pet }) {
                 ) : pet.owner === user._id ||
                   (!pet.owner && adoptionStatus === "Fostered") ? (
                   <Col className="flex-row d-flex pb-0 justify-content-center">
-                    {adoptionStatus == "Adopted" ? (
+                    {adoptionStatus === "Adopted" ? (
                       <>
                         <Button
                           className=" me-2"

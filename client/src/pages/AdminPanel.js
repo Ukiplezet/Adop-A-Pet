@@ -11,8 +11,8 @@ export default function AdminPanel() {
   const [petsArray, setPetsArray] = useState([]);
   const [addPetModal, setAddPetModal] = useState(false);
 
-  const openAddPetModal = () => { 
-      setAddPetModal(prev => !prev);
+  const openAddPetModal = () => {
+    setAddPetModal((prev) => !prev);
   };
 
   function handleSetPetsArray(petsArray) {
@@ -20,11 +20,11 @@ export default function AdminPanel() {
   }
 
   const toggleSearchType = () => {
-      setShowAllPets(!showAllPets);
+    setShowAllPets(!showAllPets);
   };
 
   const openEditAdminModal = () => {
-      setEditAdminModal(prev => !prev);
+    setEditAdminModal((prev) => !prev);
   };
 
   async function getAllPetsFromDB() {
@@ -33,10 +33,10 @@ export default function AdminPanel() {
   }
 
   useEffect(() => {
-    (async()=>{
+    (async () => {
       getAllPetsFromDB();
     })();
-  }, [showAllPets]);
+  }, [getAllPetsFromDB, showAllPets]);
 
   return (
     <div className="mt-5 pt-2">
@@ -66,7 +66,7 @@ export default function AdminPanel() {
               type="submit"
               to="/search"
               href="/search"
-              onClick={ (e) => {
+              onClick={(e) => {
                 e.preventDefault();
                 toggleSearchType();
               }}
@@ -80,7 +80,7 @@ export default function AdminPanel() {
               type="submit"
               to="/search"
               href="/search"
-              onClick={ (e) => {
+              onClick={(e) => {
                 e.preventDefault();
                 toggleSearchType();
               }}

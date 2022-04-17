@@ -1,20 +1,11 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
-// import { UserContext } from "../../../Context/AuthContext";
 import MyPetModal from "./MyPetModal";
 
 export default function PetsCard({ pet, getSavedPets }) {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const {
-    type,
-    name,
-    breed,
-    picture,
-    adoptionStatus,
-    color,
-    id,
-  } = pet;
+  const { type, name, breed, picture, adoptionStatus, color, id } = pet;
 
   const openModalHandler = () => {
     if (!isFormOpen) {
