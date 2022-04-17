@@ -9,15 +9,7 @@ import { UserContext } from "../../Context/AuthContext";
 export default function PetsCard({ pet, getAllPetsFromDB, setPetsArray }) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
-  const {
-    type,
-    name,
-    breed,
-    picture,
-    adoptionStatus,
-    color,
-    _id,
-  } = pet;
+  const { type, name, breed, picture, adoptionStatus, color, _id } = pet;
   const { user } = useContext(UserContext);
 
   const openEditModalHandler = () => {
@@ -38,54 +30,54 @@ export default function PetsCard({ pet, getAllPetsFromDB, setPetsArray }) {
 
   const deletePet = async (e) => {
     e.preventDefault();
-    let confirmDelete = window.confirm(`Are you sure you wish to remove ${pet.name} from the database?`);
-    if(confirmDelete){
+    let confirmDelete = window.confirm(
+      `Are you sure you wish to remove ${pet.name} from the database?`
+    );
+    if (confirmDelete) {
       await api.deletePetFromDB(user, pet);
-    } 
+    }
   };
 
   if (user.email === "") {
     return (
       <Col className="py-3">
         {!isFormOpen ? (
-          <div className="">
-            <Card
-              style={{ width: "270px ", height: "400px" }}
-              className="d-flex flex-row-nowrap ms-3 py-3 justify-content-center text-center"
-            >
-              <Card.Img
-                style={{ width: "100px", height: "100px" }}
-                variant="top"
-                src={picture}
-                className="d-flex flex-col align-self-center text-center"
-              />
-              <Card.Title className="pt-4">Name:{name}</Card.Title>
-              <Card.Body>
-                <Card.Text>
-                  <Row>
-                    <i>Type: {type}</i>
-                    <i>Breed: {breed}</i>
-                    <i>Status: {adoptionStatus}</i>
-                    <i>Color: {color}</i>
-                  </Row>
-                </Card.Text>
-                <Card.Footer>
-                  <div>
-                    <Button
-                      className="w-50 ms-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        openModalHandler();
-                      }}
-                      type="submit"
-                    >
-                      More Details
-                    </Button>
-                  </div>
-                </Card.Footer>
-              </Card.Body>
-            </Card>
-          </div>
+          <Card
+            style={{ width: "270px ", height: "400px" }}
+            className="d-flex flex-row-nowrap ms-3 py-3 justify-content-center text-center"
+          >
+            <Card.Img
+              style={{ width: "100px", height: "100px" }}
+              variant="top"
+              src={picture}
+              className="d-flex flex-col align-self-center text-center"
+            />
+            <Card.Title className="pt-4">Name:{name}</Card.Title>
+            <Card.Body>
+              <Card.Text>
+                <Row>
+                  <i>Type: {type}</i>
+                  <i>Breed: {breed}</i>
+                  <i>Status: {adoptionStatus}</i>
+                  <i>Color: {color}</i>
+                </Row>
+              </Card.Text>
+              <Card.Footer>
+                <div>
+                  <Button
+                    className="w-50 ms-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openModalHandler();
+                    }}
+                    type="submit"
+                  >
+                    More Details
+                  </Button>
+                </div>
+              </Card.Footer>
+            </Card.Body>
+          </Card>
         ) : (
           <>
             <PetModal

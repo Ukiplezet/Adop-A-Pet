@@ -4,12 +4,13 @@ import api from "../utils/API";
 import MyPets from "../Components/Pets/SavedPets/MyPets";
 import Pets from "../Components/Pets/Pets";
 import { Link } from "react-router-dom";
-
+import Spinner from "../Components/Spinner/Spinner";
 export default function SavedPets() {
   const { user } = useContext(UserContext);
   const [petsArray, setPetsArray] = useState([]);
   const [myPets, setmyPets] = useState(false);
   const [allPetsArray, setAllPetsArray] = useState([]);
+  const [showLoadingSpinner, setShowLoadingSpinner] = useState(true);
 
   const toggleMyPets = () => {
     if (!myPets) {
@@ -25,19 +26,24 @@ export default function SavedPets() {
     await handleSetPetsArray(response.savedPets);
   };
 
+  // useEffect(() => {
+  //   (async () => {
+  //     getSavedPets();
+  //   })();
+  // });
   useEffect(() => {
-    (
-      async()=>{
-
-        getSavedPets();
-      }
-    )();
+    (async () => {
+      await getSavedPets();
+    })();
+    setTimeout(() => {
+      setShowLoadingSpinner(false);
+    }, 3500);
   }, []);
-
   const handleSetPetsArray = async (petsArray) => {
     setPetsArray(petsArray);
     return setPetsArray;
   };
+
   return (
     <div className="mt-5 pt-5">
       <div className="">
@@ -50,16 +56,24 @@ export default function SavedPets() {
               href="/search"
               className="btn btn-primary btn-lg mx-3 mt-2 active"
               onClick={async (e) => {
+                setShowLoadingSpinner(true);
                 e.preventDefault();
                 toggleMyPets();
                 const response = await api.getAllPets();
+                setShowLoadingSpinner(false);
                 return setAllPetsArray(response);
               }}
             >
               Show Available Pets
             </Link>
             <hr />
-            <MyPets pets={petsArray} getSavedPets={getSavedPets} />
+            {showLoadingSpinner ? (
+              <div className="d-flex justify-content-center mt-5 pt-5">
+                <Spinner />
+              </div>
+            ) : (
+              <MyPets pets={petsArray} getSavedPets={getSavedPets} />
+            )}
           </>
         ) : (
           <>
@@ -68,19 +82,27 @@ export default function SavedPets() {
               href="/search"
               className="btn btn-primary btn-lg mx-3 mt-2 active"
               onClick={async (e) => {
+                setShowLoadingSpinner(true);
                 e.preventDefault();
                 await getSavedPets();
                 toggleMyPets();
+                setShowLoadingSpinner(false);
               }}
             >
               Show My Pets
             </Link>
             <hr />
-            <Pets
-              pets={allPetsArray}
-              handleSetPetsArray={handleSetPetsArray}
-              setPetsArray={setPetsArray}
-            />
+            {showLoadingSpinner ? (
+              <div className="d-flex justify-content-center mt-5 pt-5">
+                <Spinner />
+              </div>
+            ) : (
+              <Pets
+                pets={allPetsArray}
+                handleSetPetsArray={handleSetPetsArray}
+                setPetsArray={setPetsArray}
+              />
+            )}
           </>
         )}
       </div>

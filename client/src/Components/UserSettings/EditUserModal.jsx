@@ -12,7 +12,7 @@ export default function EditUserModal(props) {
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState(user.password);
-  const [passwordConfirm, setPasswordConfirm] = useState(user.password);
+  const [passwordConfirm, setPasswordConfirm] = useState(user.passwordConfirm);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [bio, setBio] = useState(user.bio);
 
@@ -33,7 +33,13 @@ export default function EditUserModal(props) {
           userId,
         });
         setUser(response);
-        props.setFirstRender(true);
+        props.setShowLoadingSpinner(true);
+        if (user.role === "user") {
+          props.fetchUserData();
+        }
+        setTimeout(() => {
+          props.setShowLoadingSpinner(false);
+        }, 2000);
       } catch (err) {
         console.log(err.message);
       }

@@ -10,6 +10,7 @@ export default function AdminPanel() {
   const [showAllPets, setShowAllPets] = useState(true);
   const [petsArray, setPetsArray] = useState([]);
   const [addPetModal, setAddPetModal] = useState(false);
+  const [showLoadingSpinner, setShowLoadingSpinner] = useState(true);
 
   const openAddPetModal = () => {
     setAddPetModal((prev) => !prev);
@@ -109,6 +110,7 @@ export default function AdminPanel() {
           )}
         </Col>
         <EditUserModal
+          setShowLoadingSpinner={setShowLoadingSpinner}
           editUserModal={editAdminModal}
           handleModalEditUser={openEditAdminModal}
         />

@@ -7,8 +7,8 @@ export default function Pets({ getAllPetsFromDB, pets, setPetsArray }) {
     <div className="d-flex flex-row justify-content-evenly">
       <Row className="">
         {pets &&
-          pets.length > 0 &&
-          pets.map((val, pet) => {
+          pets?.length > 0 &&
+          pets?.map((val, pet) => {
             return (
               <PetsCard
                 getAllPetsFromDB={getAllPetsFromDB}
