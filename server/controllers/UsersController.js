@@ -5,6 +5,7 @@ const {
   addNewUser,
   updateUserDetails,
   getUserFromDBById,
+  getAllUsers,
 } = require("../data/Users");
 
 async function loginController(req, res) {
@@ -48,6 +49,7 @@ async function signupController(req, res) {
     return err;
   }
 }
+
 async function updateUserController(req, res) {
   const userData = { ...req.body };
   try {
@@ -59,6 +61,7 @@ async function updateUserController(req, res) {
     res.status(500).send(err);
   }
 }
+
 async function getUserByIdController(req, res) {
   const userId = req.user.user_id;
   try {
@@ -68,9 +71,20 @@ async function getUserByIdController(req, res) {
     res.status(500).send(err);
   }
 }
+
+async function getAllUsersFromDB(req, res) {
+  try {
+    const response = await getAllUsers();
+    res.status(200).send(response);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
 module.exports = {
   loginController,
   signupController,
   updateUserController,
   getUserByIdController,
+  getAllUsersFromDB,
 };

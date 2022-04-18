@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../Context/AuthContext";
@@ -9,8 +9,6 @@ import "../Layout/style.css";
 
 export default function Home() {
   const { user, logout, setUser } = useContext(UserContext);
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
   const history = useHistory();
   const date = new Date();
   const dog_img = {
@@ -34,8 +32,6 @@ export default function Home() {
       userId = user._id;
       const response = await api.getUserById(userId);
       setUser(response);
-      setFirstName(response.firstName);
-      setLastName(response.lastName);
       history.push(`/${response._id}`);
     }
   };
@@ -54,14 +50,18 @@ export default function Home() {
       }
     }
   };
+
+  const getUserData = async () => {
+    const userId = localStorage.getItem("id");
+    await getUpdatedUserData(userId);
+    setLocalStorage();
+  };
+
   useEffect(() => {
     try {
-      async function getUserData() {
-        const userId = localStorage.getItem("id");
-        await getUpdatedUserData(userId);
-        setLocalStorage();
-      }
-      getUserData();
+      (async () => {
+        await getUserData();
+      })();
     } catch (err) {
       return err.message;
     }
@@ -76,7 +76,7 @@ export default function Home() {
             <h1 className="ms-3">
               Hello{" "}
               <span>
-                {firstName} {lastName}{" "}
+                {user.firstName} {user.lastName}{" "}
               </span>
               how you doing??
             </h1>
@@ -112,7 +112,7 @@ export default function Home() {
             <div className="app-wrapper mt-5 pt-5">
               <div className="App mt-4">
                 <h1 className="">
-                  Hello {firstName} {lastName} how you doing??
+                  Hello {user.firstName} {user.lastName} how you doing??
                 </h1>
                 <p>Today is: {date.toLocaleString()}</p>
                 <p>

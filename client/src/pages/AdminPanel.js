@@ -4,13 +4,16 @@ import AddNewPet from "../Components/Pets/AddNewPet";
 import Pets from "../Components/Pets/Pets";
 import api from "../utils/API";
 import EditUserModal from "../Components/UserSettings/EditUserModal";
+import UsersList from "../Components/UserSettings/UsersList";
 
 export default function AdminPanel() {
   const [editAdminModal, setEditAdminModal] = useState(false);
-  const [showAllPets, setShowAllPets] = useState(true);
+  const [showAllPets, setShowAllPets] = useState(false);
   const [petsArray, setPetsArray] = useState([]);
   const [addPetModal, setAddPetModal] = useState(false);
   const [showLoadingSpinner, setShowLoadingSpinner] = useState(true);
+  const [showAllUsers, setShowAllUsers] = useState(false);
+  const [usersArray, setUsersArray] = useState([]);
 
   const openAddPetModal = () => {
     setAddPetModal((prev) => !prev);
@@ -24,20 +27,32 @@ export default function AdminPanel() {
     setShowAllPets(!showAllPets);
   };
 
+  const toggleShowUsers = () => {
+    setShowAllUsers(!showAllUsers);
+  };
+
   const openEditAdminModal = () => {
     setEditAdminModal((prev) => !prev);
   };
 
-  async function getAllPetsFromDB() {
+  const getAllPetsFromDB = async () => {
     const response = await api.getAllPets();
     handleSetPetsArray(response);
-  }
+  };
 
+  const getAllUsersFromDB = async () => {
+    const role = localStorage.getItem("role");
+    const response = await api.getAllUsers(role);
+    handleSetUsersArray(response.data);
+  };
+  const handleSetUsersArray = (usersArray) => {
+    setUsersArray(usersArray);
+  };
   useEffect(() => {
     (async () => {
-      getAllPetsFromDB();
+      await getAllPetsFromDB();
     })();
-  }, [getAllPetsFromDB, showAllPets]);
+  }, []);
 
   return (
     <div className="mt-5 pt-2">
@@ -89,6 +104,36 @@ export default function AdminPanel() {
               Show All Pets
             </Button>
           )}
+          {showAllUsers ? (
+            <Button
+              className="d-inline-flex  ms-2"
+              variant="primary"
+              type="submit"
+              to="/search"
+              href="/search"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleShowUsers();
+              }}
+            >
+              Hide All Users
+            </Button>
+          ) : (
+            <Button
+              className="d-inline-flex  ms-2"
+              variant="primary"
+              type="submit"
+              to="/search"
+              href="/search"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleShowUsers();
+                getAllUsersFromDB();
+              }}
+            >
+              Show All Users
+            </Button>
+          )}
           <AddNewPet
             addPetModal={addPetModal}
             handleModalAddPet={openAddPetModal}
@@ -101,6 +146,21 @@ export default function AdminPanel() {
                 setPetsArray={setPetsArray}
                 getAllPetsFromDB={getAllPetsFromDB}
                 handleSetPetsArray={handleSetPetsArray}
+              />
+            </>
+          ) : (
+            <>
+              <hr />
+            </>
+          )}
+          {showAllUsers ? (
+            <>
+              <hr />
+              <UsersList
+                users={usersArray}
+                setUsersArray={setUsersArray}
+                getAllUsersFromDB={getAllUsersFromDB}
+                handleSetUsersArray={handleSetUsersArray}
               />
             </>
           ) : (

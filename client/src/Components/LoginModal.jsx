@@ -65,7 +65,7 @@ const LoginModal = (props) => {
         password,
       });
       if (response.role === "admin") {
-        settingLoggedUserContext(response);
+        await settingLoggedUserContext(response);
         const loggedId = response._id;
         props.handleModalOpen();
         history.push(`/adminpanel/${loggedId}`);
@@ -113,7 +113,7 @@ const LoginModal = (props) => {
     login(user);
     localStorage.setItem("token", loggedUser.token);
     localStorage.setItem("id", loggedUser._id);
-
+    localStorage.setItem("role", loggedUser.role);
     return setUser(loggedUser);
   };
 
@@ -167,7 +167,6 @@ const LoginModal = (props) => {
             className=" flex-col "
             onSubmit={(e) => {
               handleSignupSubmit(e);
-              // setRegisterView(false);
             }}
           >
             <Modal.Header className="justify-content-center">

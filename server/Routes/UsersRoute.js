@@ -4,13 +4,13 @@ const router = express.Router();
 const {
   updateUserController,
   getUserByIdController,
+  getAllUsersFromDB,
 } = require("../controllers/UsersController");
 
 const updateValid = require("../Middleware/UpdateUserValidation");
-
-const { updateUserDataSchema } = require("../Middleware/schema/UserSchema");
-
 const verifyToken = require("../Middleware/auth");
+const verifyUserRole = require("../Middleware/UserRoleValidation");
+const { updateUserDataSchema } = require("../Middleware/schema/UserSchema");
 
 router.put(
   "/:id",
@@ -20,5 +20,7 @@ router.put(
 );
 
 router.get("/:id", verifyToken, getUserByIdController);
+
+router.post("/", verifyUserRole, getAllUsersFromDB);
 
 module.exports = router;

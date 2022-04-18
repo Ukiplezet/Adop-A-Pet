@@ -17,4 +17,5 @@ const {
 router.post("/login", loginValid(loginSchema), loginController);
 
 router.post("/signup", updateValid(signupSchema), signupController);
+
 module.exports = router;

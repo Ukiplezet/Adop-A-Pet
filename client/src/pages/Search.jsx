@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { FloatingLabel, Form, Card } from "react-bootstrap";
 import Pets from "../Components/Pets/Pets";
 import api from "../utils/API";
+import Spinner from "../Components/Spinner/Spinner";
 
 export default function Search(props) {
   const [petsArray, setPetsArray] = useState("");
@@ -15,6 +16,7 @@ export default function Search(props) {
   const [height, setHeight] = useState("");
   const [minWeight, setMinWeight] = useState("");
   const [weight, setWeight] = useState("");
+  const [showLoadingSpinner, setShowLoadingSpinner] = useState(true);
 
   const toggleSearchType = () => {
     if (!searchType) {
@@ -25,6 +27,7 @@ export default function Search(props) {
   };
 
   const handleSearchRequest = async () => {
+    setShowLoadingSpinner(true);
     if (!searchType) {
       if (animalType === "Select") {
         await getAllPetsFromDB();
@@ -32,10 +35,14 @@ export default function Search(props) {
       } else if (animalType === "Cats" || animalType === "Dogs") {
         const petData = `search?query&type=${animalType.slice(0, -1)}`;
         const response = await api.getPetByCriteria(petData);
-        setPetsArray(response.data);
+        if (response) {
+          setPetsArray(response.data);
+          setShowLoadingSpinner(false);
+        }
       }
       return;
     } else {
+      setShowLoadingSpinner(true);
       let petData = `search?query`;
       if (animalType === "Cats" || animalType === "Dogs") {
         petData += `&type=${animalType.slice(0, -1)}`;
@@ -56,7 +63,10 @@ export default function Search(props) {
         if (minWeight) petData += `&minweight=${minWeight}`;
 
         const response = await api.getPetByCriteria(petData);
-        await handleSetPetsArray(response.data);
+        if (response) {
+          await handleSetPetsArray(response.data);
+          setShowLoadingSpinner(false);
+        }
         if (
           petData === "search?query=" &&
           !(
@@ -77,14 +87,16 @@ export default function Search(props) {
 
   const getAllPetsFromDB = async () => {
     const response = await api.getAllPets();
-    await handleSetPetsArray(response);
+    if (response) {
+      await handleSetPetsArray(response);
+      setShowLoadingSpinner(false);
+    }
   };
 
   useEffect(() => {
-   ( async () => {
+    (async () => {
       await getAllPetsFromDB();
     })();
-  
   }, []);
 
   async function handleSetPetsArray(petsArray) {
@@ -277,12 +289,18 @@ export default function Search(props) {
         )}
       </div>
       <hr />
-      <Pets
-        pets={petsArray}
-        handleSetPetsArray={handleSetPetsArray}
-        setPetsArray={setPetsArray}
-        getSavedPets={getAllPetsFromDB}
-      />
+      {showLoadingSpinner ? (
+        <div className="d-flex justify-content-center mt-5 pt-5">
+          <Spinner />
+        </div>
+      ) : (
+        <Pets
+          pets={petsArray}
+          handleSetPetsArray={handleSetPetsArray}
+          setPetsArray={setPetsArray}
+          getSavedPets={getAllPetsFromDB}
+        />
+      )}
     </>
   );
 }

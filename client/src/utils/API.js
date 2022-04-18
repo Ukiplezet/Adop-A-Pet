@@ -128,8 +128,8 @@ export default {
     );
     return response.data;
   },
-  getUsers: async () => {
-    return axios.get(`${BASE_URL}/user`);
+  getAllUsers: async (role) => {
+    return axios.post(`${BASE_URL}/user`, { role: role });
   },
 
   getUserById: async (userId) => {

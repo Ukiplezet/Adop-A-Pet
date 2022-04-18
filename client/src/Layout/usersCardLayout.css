@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+.name-list {
+    list-style-type: none;
+    display: grid;
+    grid-gap: 1.2em;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.person-card {
+    border: 1px solid #696969;
+    border-radius: 5px;
+    margin: 0 1em;
+}
+
+
+.person-name {
+    /* background-color: #696969; */
+    background-color: #212529;
+    border-radius: 5px;
+    padding: 0.5em;
+}
+
+.user-bio {
+    padding-left: 0.5em;
+}
+
+.user-phoneNumber {
+    padding-left: 0.5em;
+}
+
+.user-mail {
+    padding-left: 0.5em;
+}
+
+.user-role {
+    padding-left: 0.5em;
+}
+
+.header {
+    padding: 0.5em;
+    margin: 0;
+    background-color: salmon;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+.navBar {
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    margin-left: 1em;
+    padding-left: 1em;
+}

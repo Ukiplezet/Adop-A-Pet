@@ -23,21 +23,27 @@ export default function SavedPets() {
   const getSavedPets = async () => {
     const userId = user._id;
     const response = await api.getPetByUserId(userId);
-    await handleSetPetsArray(response.savedPets);
+    if (response) {
+      await handleSetPetsArray(response.savedPets);
+      setShowLoadingSpinner(false);
+    }
+  };
+  
+  const DisplayAllPets = async (e) => {
+    setShowLoadingSpinner(true);
+    e.preventDefault();
+    toggleMyPets();
+    const response = await api.getAllPets();
+    if (response) {
+      setShowLoadingSpinner(false);
+      return setAllPetsArray(response);
+    }
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     getSavedPets();
-  //   })();
-  // });
   useEffect(() => {
     (async () => {
       await getSavedPets();
     })();
-    setTimeout(() => {
-      setShowLoadingSpinner(false);
-    }, 3500);
   }, []);
   const handleSetPetsArray = async (petsArray) => {
     setPetsArray(petsArray);
@@ -56,12 +62,7 @@ export default function SavedPets() {
               href="/search"
               className="btn btn-primary btn-lg mx-3 mt-2 active"
               onClick={async (e) => {
-                setShowLoadingSpinner(true);
-                e.preventDefault();
-                toggleMyPets();
-                const response = await api.getAllPets();
-                setShowLoadingSpinner(false);
-                return setAllPetsArray(response);
+                DisplayAllPets(e);
               }}
             >
               Show Available Pets
@@ -86,7 +87,6 @@ export default function SavedPets() {
                 e.preventDefault();
                 await getSavedPets();
                 toggleMyPets();
-                setShowLoadingSpinner(false);
               }}
             >
               Show My Pets

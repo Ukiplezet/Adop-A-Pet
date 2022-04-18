@@ -10,11 +10,6 @@ import Spinner from "../Components/Spinner/Spinner";
 
 export default function UserProfile() {
   const { user, setUser } = useContext(UserContext);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [bio, setBio] = useState("");
   const [editUserModal, setEditUserModal] = useState(false);
   const [showLoadingSpinner, setShowLoadingSpinner] = useState(true);
 
@@ -28,12 +23,10 @@ export default function UserProfile() {
 
   const getUpdatedUserData = async (userId) => {
     const response = await api.getUserById(userId);
-    setUser(response);
-    setFirstName(response.firstName);
-    setLastName(response.lastName);
-    setEmail(response.email);
-    setPhoneNumber(response.phoneNumber);
-    setBio(response.bio);
+    if (response) {
+      setUser(response);
+      setShowLoadingSpinner(false);
+    }
   };
   const fetchUserData = async () => {
     const userId = user._id;
@@ -44,9 +37,6 @@ export default function UserProfile() {
     (async () => {
       await fetchUserData();
     })();
-    setTimeout(() => {
-      setShowLoadingSpinner(false);
-    }, 3500);
   }, []);
 
   const loadUserData = () => {
@@ -77,11 +67,11 @@ export default function UserProfile() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   {" "}
-                  <span className="pe-2">{firstName}</span>
-                  <span>{lastName}</span>
+                  <span className="pe-2">{user.firstName}</span>
+                  <span>{user.lastName}</span>
                 </ListGroup.Item>
-                <ListGroup.Item>{email}</ListGroup.Item>
-                <ListGroup.Item>972-{phoneNumber}</ListGroup.Item>
+                <ListGroup.Item>{user.email}</ListGroup.Item>
+                <ListGroup.Item>972-{user.phoneNumber}</ListGroup.Item>
               </ListGroup>
             </Card.Title>
           </div>
@@ -90,7 +80,7 @@ export default function UserProfile() {
               <Card.Subtitle className="fs-5 text-muted pb-0">
                 Bio:
               </Card.Subtitle>
-              <p className="fs-5">{bio}</p>
+              <p className="fs-5">{user.bio}</p>
             </Card.Text>
           </Card.Body>
         </Card>

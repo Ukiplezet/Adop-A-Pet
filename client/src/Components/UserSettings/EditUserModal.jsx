@@ -22,6 +22,7 @@ export default function EditUserModal(props) {
       alert("Please enter password and passowrd confirmation");
     }
     if (password === passwordConfirm) {
+      props.setShowLoadingSpinner(true);
       try {
         const response = await api.updateUserData({
           firstName,
@@ -33,18 +34,14 @@ export default function EditUserModal(props) {
           userId,
         });
         setUser(response);
-        props.setShowLoadingSpinner(true);
         if (user.role === "user") {
           props.fetchUserData();
         }
-        setTimeout(() => {
-          props.setShowLoadingSpinner(false);
-        }, 2000);
       } catch (err) {
         console.log(err.message);
       }
     } else {
-      alert("password doesnt match!");
+      alert("Please Confirm Your Password To Save Changes!");
     }
   };
 

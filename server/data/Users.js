@@ -182,6 +182,15 @@ async function changeStatusOfPetInSavedArray(userId, pet, petId, status) {
     return err;
   }
 }
+
+async function getAllUsers() {
+  try {
+    const allUsers = UserModel.find();
+    return allUsers;
+  } catch (err) {
+    return err;
+  }
+}
 module.exports = {
   loginUser,
   addNewUser,
@@ -190,4 +199,5 @@ module.exports = {
   savePetAtUserArray,
   removeSavedPetFromUserArray,
   changeStatusOfPetInSavedArray,
+  getAllUsers,
 };
